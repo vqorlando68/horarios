@@ -1,0 +1,262 @@
+.week-view-container {
+    background: var(--bg-surface);
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.week-header {
+    display: flex;
+    border-bottom: 2px solid var(--border-color);
+    transition: border-color 0.25s ease;
+}
+
+.time-col-header {
+    width: 80px;
+    padding: 14px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.day-col-header {
+    flex: 1;
+    padding: 14px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    border-left: 1px solid var(--border-color);
+    transition: color 0.25s, border-color 0.25s, background-color 0.25s;
+}
+
+.day-col-header.today-col {
+    color: var(--color-seguridad-500);
+    background: var(--cell-today-bg);
+}
+
+.week-body {
+    display: flex;
+    position: relative;
+}
+
+.time-col {
+    width: 80px;
+    flex-shrink: 0;
+}
+
+.time-slot {
+    height: 80px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-align: right;
+    padding-right: 12px;
+    transform: translateY(-8px);
+    transition: color 0.25s;
+}
+
+.day-col {
+    flex: 1;
+    position: relative;
+    border-left: 1px solid var(--border-color);
+    background-color: var(--bg-surface-alt);
+    transition: background-color 0.25s, border-color 0.25s;
+}
+
+.day-col.weekend {
+    background-color: var(--bg-app);
+}
+
+.grid-cell {
+    height: 80px;
+    border-bottom: 1px solid var(--border-color);
+    transition: border-color 0.25s;
+}
+
+.events-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.calendar-event {
+    position: absolute;
+    background: var(--event-bg);
+    border-radius: 6px;
+    border-left: 4px solid;
+    padding: 4px 8px;
+    box-shadow: var(--shadow-sm);
+    overflow: visible;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.25s, box-shadow 0.1s;
+    z-index: 25;
+    pointer-events: auto;
+}
+
+.calendar-event:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    z-index: 50;
+}
+
+/* Tooltip */
+.custom-wk-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 280px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    white-space: normal;
+    background-color: var(--event-color, #1e293b);
+    box-shadow: var(--shadow-lg);
+    z-index: 100;
+    pointer-events: none;
+}
+
+.custom-wk-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: var(--event-color, #1e293b) transparent transparent transparent;
+}
+
+.calendar-event:hover .custom-wk-tooltip {
+    display: block;
+}
+
+.event-time {
+    font-size: 0.68rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.event-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.25s;
+}
+
+.event-subtitle {
+    font-size: 0.66rem;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+    transition: color 0.25s;
+}
+
+.event-reason {
+    font-size: 0.66rem;
+    color: var(--text-muted);
+    transition: color 0.25s;
+}
+
+.calendar-absence {
+    position: absolute;
+    background: rgba(0, 170, 225, 0.1);
+    color: var(--color-seguridad-500);
+    border: 1px solid rgba(0, 170, 225, 0.25);
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: flex-start;
+}
+
+.off-day-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--border-color);
+    letter-spacing: 0.1em;
+    transition: color 0.25s;
+}
+
+/* Franjas */
+.franjas-container {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 1;
+}
+
+.franja-slot {
+    position: absolute;
+    left: 0; right: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.franja-overlap {
+    background: repeating-linear-gradient(45deg, rgba(254,202,202,0.5), rgba(254,202,202,0.5) 10px, rgba(252,165,165,0.5) 10px, rgba(252,165,165,0.5) 20px);
+    border-left: 3px solid #dc2626;
+}
+
+.franja-v {
+    background:
+        repeating-linear-gradient(to bottom, transparent, transparent 25.666px, rgba(22,163,74,0.3) 25.666px, rgba(22,163,74,0.3) 26.666px),
+        repeating-linear-gradient(45deg, rgba(220,252,231,0.4), rgba(220,252,231,0.4) 10px, rgba(187,247,208,0.4) 10px, rgba(187,247,208,0.4) 20px);
+    border-left: 3px solid #16a34a;
+}
+
+.franja-o {
+    background:
+        repeating-linear-gradient(to bottom, transparent, transparent 19px, rgba(234,88,12,0.3) 19px, rgba(234,88,12,0.3) 20px),
+        repeating-linear-gradient(45deg, rgba(255,237,213,0.4), rgba(255,237,213,0.4) 10px, rgba(254,215,170,0.4) 10px, rgba(254,215,170,0.4) 20px);
+    border-left: 3px solid #ea580c;
+}
+
+.franja-g {
+    background:
+        repeating-linear-gradient(to bottom, transparent, transparent 25.666px, rgba(3,105,161,0.3) 25.666px, rgba(3,105,161,0.3) 26.666px),
+        repeating-linear-gradient(45deg, rgba(224,242,254,0.4), rgba(224,242,254,0.4) 10px, rgba(186,230,253,0.4) 10px, rgba(186,230,253,0.4) 20px);
+    border-left: 3px solid #0369a1;
+}
+
+.franja-regular {
+    background-color: rgba(0, 170, 225, 0.06);
+    border: 1px solid rgba(0, 170, 225, 0.15);
+    z-index: 2;
+}
+
+.franja-label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transform: rotate(-90deg);
+    transform-origin: center;
+    white-space: nowrap;
+    transition: color 0.25s;
+}

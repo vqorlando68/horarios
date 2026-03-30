@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ═══════════════════════════════════════
+   DESIGN TOKENS – LIGHT (default)
+═══════════════════════════════════════ */
+:root {
+  /* Brand */
+  --color-seguridad-500: #00aae1;
+  --color-salud-600:     #01ae6c;
+  --color-creatividad-400: #ff7a39;
+  --color-proteccion-400:  #0fecaa;
+  --color-sensibilidad-200: #dbdbdb;
+  --color-confianza-950:   #033d59;
+
+  /* Backgrounds */
+  --bg-app:         #f0f2f5;
+  --bg-surface:     #ffffff;
+  --bg-surface-alt: #f8fafc;
+  --bg-header:      #ffffff;
+  --bg-controls:    #ffffff;
+  --bg-toggle:      #f1f5f9;
+  --bg-toggle-active: #ffffff;
+  --bg-input:       #ffffff;
+  --bg-calendar:    #ffffff;
+  --bg-timeline:    #f0f2f5;
+
+  /* Sidebar – light */
+  --sidebar-bg:           #ffffff;
+  --sidebar-border:       #e8ecf0;
+  --sidebar-logo-color:   #111827;
+  --sidebar-text:         #4b5563;
+  --sidebar-text-muted:   #9ca3af;
+  --sidebar-item-hover:   #f1f5f9;
+  --sidebar-item-active-bg:    rgba(0, 170, 225, 0.1);
+  --sidebar-item-active-text:  #0284c7;
+  --sidebar-section-label: #9ca3af;
+  --sidebar-avatar-bg:    linear-gradient(135deg, #00aae1, #6366f1);
+  --sidebar-footer-border: #e8ecf0;
+  --sidebar-username:     #111827;
+  --sidebar-role:         #9ca3af;
+  --sidebar-logout:       #9ca3af;
+
+  /* Text */
+  --text-primary:   #111827;
+  --text-secondary: #4b5563;
+  --text-muted:     #9ca3af;
+
+  /* Borders */
+  --border-color:   #e5e7eb;
+  --border-light:   rgba(229, 231, 235, 0.8);
+
+  /* Stats cards – light */
+  --stat-card-bg:   #ffffff;
+  --stat-card-border: rgba(229, 231, 235, 0.8);
+  --stat-label:     #9ca3af;
+
+  /* Calendar event colors */
+  --event-bg:       #ffffff;
+  --event-border:   rgba(229, 231, 235, 0.8);
+
+  /* Month cells */
+  --cell-empty-bg:  #fafafa;
+  --cell-today-bg:  #eff8ff;
+  --cell-grid-header-bg: #f8fafc;
+
+  /* Modal */
+  --modal-bg:       #ffffff;
+  --modal-backdrop: rgba(3, 61, 89, 0.4);
+
+  /* Input */
+  --input-bg:       #ffffff;
+  --input-border:   #e5e7eb;
+  --input-text:     #111827;
+
+  /* Toggle switch */
+  --toggle-switch-bg: #e5e7eb;
+
+  /* Misc */
+  --working-hours-bg: rgba(0, 170, 225, 0.05);
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:  0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+  --shadow-lg:  0 20px 25px -5px rgba(0,0,0,0.08), 0 10px 10px -5px rgba(0,0,0,0.03);
+
+  --font-inter: 'Inter', sans-serif;
+}
+
+/* ═══════════════════════════════════════
+   DESIGN TOKENS – DARK
+═══════════════════════════════════════ */
+[data-theme="dark"] {
+  /* Backgrounds */
+  --bg-app:         #0d1117;
+  --bg-surface:     #161b22;
+  --bg-surface-alt: #1c2128;
+  --bg-header:      #161b22;
+  --bg-controls:    #161b22;
+  --bg-toggle:      #21262d;
+  --bg-toggle-active: #30363d;
+  --bg-input:       #21262d;
+  --bg-calendar:    #161b22;
+  --bg-timeline:    #0d1117;
+
+  /* Sidebar – dark */
+  --sidebar-bg:           #0d1117;
+  --sidebar-border:       rgba(255,255,255,0.06);
+  --sidebar-logo-color:   #e6edf3;
+  --sidebar-text:         rgba(255,255,255,0.6);
+  --sidebar-text-muted:   rgba(255,255,255,0.3);
+  --sidebar-item-hover:   rgba(255,255,255,0.06);
+  --sidebar-item-active-bg:    rgba(0, 170, 225, 0.15);
+  --sidebar-item-active-text:  #00aae1;
+  --sidebar-section-label: rgba(255,255,255,0.25);
+  --sidebar-avatar-bg:    linear-gradient(135deg, #00aae1, #6366f1);
+  --sidebar-footer-border: rgba(255,255,255,0.06);
+  --sidebar-username:     rgba(255,255,255,0.85);
+  --sidebar-role:         rgba(255,255,255,0.3);
+  --sidebar-logout:       rgba(255,255,255,0.3);
+
+  /* Text */
+  --text-primary:   #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted:     #6e7681;
+
+  /* Borders */
+  --border-color:   #30363d;
+  --border-light:   rgba(48, 54, 61, 0.8);
+
+  /* Stats cards – dark */
+  --stat-card-bg:   #161b22;
+  --stat-card-border: rgba(48,54,61,0.8);
+  --stat-label:     #6e7681;
+
+  /* Calendar events */
+  --event-bg:       #21262d;
+  --event-border:   rgba(48,54,61,0.8);
+
+  /* Month cells */
+  --cell-empty-bg:  #0d1117;
+  --cell-today-bg:  rgba(0, 170, 225, 0.08);
+  --cell-grid-header-bg: #1c2128;
+
+  /* Modal */
+  --modal-bg:       #1c2128;
+  --modal-backdrop: rgba(0, 0, 0, 0.65);
+
+  /* Input */
+  --input-bg:       #21262d;
+  --input-border:   #30363d;
+  --input-text:     #e6edf3;
+
+  /* Toggle switch */
+  --toggle-switch-bg: #30363d;
+
+  /* Misc */
+  --working-hours-bg: rgba(0, 170, 225, 0.07);
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md:  0 4px 6px -1px rgba(0,0,0,0.4);
+  --shadow-lg:  0 20px 25px -5px rgba(0,0,0,0.5);
+}
+
+/* ═══════════════════════════════════════
+   BASE
+═══════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-inter);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Utilities */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

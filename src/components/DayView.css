@@ -1,0 +1,323 @@
+.day-view-container {
+    background: var(--bg-surface);
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 24px;
+    background: var(--cell-today-bg);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom: 2px solid var(--color-seguridad-500);
+    transition: background-color 0.25s;
+}
+
+.day-header h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    transition: color 0.25s;
+}
+
+.working-hours-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-seguridad-500);
+}
+
+.working-hours-badge .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-seguridad-500);
+}
+
+.day-body {
+    display: flex;
+    position: relative;
+}
+
+.time-col {
+    width: 80px;
+    flex-shrink: 0;
+}
+
+.time-slot {
+    height: 80px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-align: right;
+    padding-right: 12px;
+    transform: translateY(-8px);
+    transition: color 0.25s;
+}
+
+.day-content {
+    flex: 1;
+    position: relative;
+    border-left: 1px solid var(--border-color);
+    background-color: var(--bg-surface-alt);
+    padding-bottom: 200px;
+    transition: background-color 0.25s, border-color 0.25s;
+}
+
+.day-grid-cell {
+    height: 80px;
+    border-bottom: 1px solid var(--border-color);
+    transition: border-color 0.25s;
+}
+
+.day-grid-cell.out-of-hours {
+    background: repeating-linear-gradient(-45deg,
+        var(--bg-app),
+        var(--bg-app) 10px,
+        var(--bg-surface-alt) 10px,
+        var(--bg-surface-alt) 20px);
+}
+
+/* Events */
+.day-event {
+    position: absolute;
+    background: var(--event-bg);
+    border-radius: 8px;
+    border: 1px solid var(--event-border);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    overflow: visible;
+    z-index: 21;
+    cursor: pointer;
+    transition: background-color 0.25s, border-color 0.25s;
+}
+
+.day-event:hover {
+    z-index: 50;
+    box-shadow: var(--shadow-lg);
+}
+
+.truncate-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    max-width: 100%;
+}
+
+.tooltip-wrapper {
+    position: relative;
+    cursor: pointer;
+}
+
+.tooltip-wrapper:hover .custom-tooltip {
+    display: block;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.d-event-indicator {
+    width: 4px;
+    flex-shrink: 0;
+    border-radius: 8px 0 0 8px;
+}
+
+.d-event-content {
+    padding: 8px 12px;
+    flex: 1;
+    min-width: 150px;
+    border-right: 1px dotted var(--border-color);
+    flex-shrink: 0;
+    transition: border-color 0.25s;
+}
+
+.d-event-id {
+    font-size: 0.65rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.d-event-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    transition: color 0.25s;
+}
+
+.d-event-meta {
+    display: flex;
+    flex: 2;
+    padding: 8px 16px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.d-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.meta-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    transition: color 0.25s;
+}
+
+.meta-value {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: color 0.25s;
+}
+
+.reason-item {
+    flex: 1;
+    min-width: 0;
+    max-width: 400px;
+}
+
+/* Tooltip (dark pill — always dark for contrast regardless of theme) */
+.custom-tooltip {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    left: auto;
+    transform: none;
+    width: 380px;
+    background: #1e293b;
+    color: #f1f5f9;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    box-shadow: 0 20px 30px rgba(0,0,0,0.5);
+    z-index: 99999;
+    pointer-events: none;
+    line-height: 1.6;
+    white-space: normal;
+    text-align: left;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.custom-tooltip strong {
+    color: #38bdf8;
+    margin-bottom: 6px;
+    display: inline-block;
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(56,189,248,0.3);
+    padding-bottom: 2px;
+}
+
+.custom-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    right: 40px;
+    left: auto;
+    transform: none;
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent #1e293b transparent;
+}
+
+.tooltip-wrapper:hover .custom-tooltip {
+    display: block;
+    animation: fadeInTooltip 0.2s ease-out;
+}
+
+@keyframes fadeInTooltip {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Franjas */
+.franjas-container {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 1;
+}
+
+.franja-slot {
+    position: absolute;
+    left: 0; right: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.franja-overlap {
+    background: repeating-linear-gradient(45deg, rgba(254,202,202,0.5), rgba(254,202,202,0.5) 10px, rgba(252,165,165,0.5) 10px, rgba(252,165,165,0.5) 20px);
+    border-left: 3px solid #dc2626;
+}
+
+.franja-v {
+    background:
+        repeating-linear-gradient(to bottom, transparent, transparent 25.666px, rgba(22,163,74,0.3) 25.666px, rgba(22,163,74,0.3) 26.666px),
+        repeating-linear-gradient(45deg, rgba(220,252,231,0.4), rgba(220,252,231,0.4) 10px, rgba(187,247,208,0.4) 10px, rgba(187,247,208,0.4) 20px);
+    border-left: 3px solid #16a34a;
+}
+
+.franja-o {
+    background:
+        repeating-linear-gradient(to bottom, transparent, transparent 19px, rgba(234,88,12,0.3) 19px, rgba(234,88,12,0.3) 20px),
+        repeating-linear-gradient(45deg, rgba(255,237,213,0.4), rgba(255,237,213,0.4) 10px, rgba(254,215,170,0.4) 10px, rgba(254,215,170,0.4) 20px);
+    border-left: 3px solid #ea580c;
+}
+
+.franja-g {
+    background:
+        repeating-linear-gradient(to bottom, transparent, transparent 25.666px, rgba(3,105,161,0.3) 25.666px, rgba(3,105,161,0.3) 26.666px),
+        repeating-linear-gradient(45deg, rgba(224,242,254,0.4), rgba(224,242,254,0.4) 10px, rgba(186,230,253,0.4) 10px, rgba(186,230,253,0.4) 20px);
+    border-left: 3px solid #0369a1;
+}
+
+.franja-regular {
+    background-color: rgba(0, 170, 225, 0.06);
+    border: 1px solid rgba(0, 170, 225, 0.15);
+    z-index: 2;
+}
+
+.franja-label-horizontal {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    white-space: nowrap;
+    transition: color 0.25s;
+}
+
+.events-container {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.day-event {
+    pointer-events: auto;
+}

@@ -1,0 +1,73 @@
+[2026-03-02 18:38:20]
+Prompt ejecutado:
+De acuerdo con las tareas y el plan de implementacion, adjunto imagenes de referencia y arranca.
+
+Archivos generados:
+- c:/Orlando/Repositorios/antigravity/Horarios/package.json (Vite init)
+- c:/Orlando/Repositorios/antigravity/Horarios/prompts.txt (Creado)
+
+[2026-03-02 18:38:50]
+Prompt (interno):
+Configuracion logica y visual del sistema React + Oracle mocks
+
+Archivos generados:
+- database/pkg_calendario.sql
+- src/styles/tokens.css
+- src/context/CalendarioContext.jsx
+- src/hooks/useCalendario.js
+- src/services/calendarioService.js
+- src/components/CalendarLayout.jsx & .css
+- src/components/WeekView.jsx & .css
+- src/components/MonthView.jsx & .css
+- src/components/DayView.jsx & .css
+- src/components/AppointmentModal.jsx & .css
+- src/components/StatsFooter.jsx & .css
+- src/App.jsx & src/main.jsx
+
+[2026-03-02 19:10:00]
+Auditoría y Corrección de código
+- Corrección de template literals y string interpolation bindings en JSX (DayView, WeekView, MonthView)
+- Generación de Vite app de react manual (package.json / vite.config.js / index.html) por limitación de scripts.
+- Verificación del renderizado del Dev Server OK.
+
+[2026-03-02 20:25:00]
+Prompt ejecutado:
+Colocar un icono de cambio de idioma ingles/español y realizar la traduccion respectiva, en el calendario diario el codigo de la cita y debajo el nombre del paciente se ve recortado ampliar el ancho o reducir el tipo de letra para verlo completo.
+
+Archivos modificados:
+- src/translations.js (creado)
+- src/context/CalendarioContext.jsx (Inyectado Language)
+- layout y componentes adaptados para i18n
+- src/components/DayView.css (Se amplió 350px y redujo fonts)
+
+[2026-03-02 20:26:00]
+Prompt ejecutado:
+La opcion de diario y semanal tenga las flechas para que se pueda cambiar de dia o semana como corresponda, en el calendario diario subir el codigo de la cita para que se vea completo el nombre del paciente.
+
+Archivos modificados:
+- src/components/MonthView.jsx (Habilitación de clics en flechas usando prevDateRange, nextDateRange, setToday)
+- src/components/DayView.jsx (Inyección de flechas de navegación e integración del código de la cita "inline" con el nombre del paciente para asegurar visualización sin clipping vertical).
+- src/components/WeekView.jsx (Añadida cabecera secundaria con flechas de navegación reactivas).
+
+[2026-03-04 20:59:00]
+Prompt ejecutado:
+Finalizar la UI del calendario resolviendo problemas de internacionalización y consistencia visual:
+- Asegurar que todas las etiquetas de fecha y día en las vistas (diaria, semanal, mensual) se muestren correctamente en el idioma seleccionado (Inglés o Español).
+- Investigar y solucionar el problema donde toda una columna (ej. 5 de marzo) aparece de color azul en la vista semanal (WeekView) por error de renderizado/estilos.
+- Asegurar que el estilo visual se alinee con el esquema de colores esperado de la interfaz.
+
+Archivos modificados:
+- src/components/WeekView.jsx & .css
+- src/components/DayView.jsx
+- src/components/MonthView.jsx
+- src/hooks/useCalendario.js
+- src/components/AppointmentModal.jsx
+- src/components/DocumentationModal.jsx
+- src/translations.js
+
+[2026-03-05 06:42:00]
+Prompt ejecutado:
+Actualizar el archivo de prompts.txt porque no se almacenado desde el 2026-03-02
+
+Archivos modificados:
+- prompts.txt

@@ -1,0 +1,253 @@
+.schedule-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  font-family: 'Inter', sans-serif;
+}
+
+.schedule-modal-content {
+  background: #fff;
+  border-radius: 16px;
+  width: 520px;
+  max-width: 94%;
+  padding: 32px;
+  box-shadow: 0 16px 32px rgba(0,0,0,0.1);
+  border: 1px solid var(--accent-neon);
+  animation: modal-pop 0.3s ease-out;
+  position: relative;
+}
+
+/* ─── Info strip ─── */
+.modal-info-strip {
+  display: flex;
+  align-items: center;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 20px;
+  gap: 0;
+  font-size: 13px;
+  color: var(--conf-950);
+}
+
+.modal-info-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.modal-info-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.modal-info-text {
+  color: var(--gray-950);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.modal-info-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--gray-200);
+  margin: 0 14px;
+}
+
+/* ─── Limpiar button ─── */
+.btn-limpiar-session {
+  background: transparent;
+  border: 1px solid #e53e3e;
+  color: #e53e3e;
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: background 0.15s;
+}
+
+.btn-limpiar-session:hover {
+  background: #fff5f5;
+}
+
+.schedule-modal-content {
+  background: #fff;
+  border-radius: 16px;
+  width: 500px;
+  max-width: 90%;
+  padding: 32px;
+  box-shadow: 0 16px 32px rgba(0,0,0,0.1);
+  border: 1px solid var(--accent-neon);
+  animation: modal-pop 0.3s ease-out;
+  position: relative;
+}
+
+@keyframes modal-pop {
+  0% { transform: scale(0.95) translateY(20px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.modal-pretitle {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--accent-grn);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.modal-title-text {
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--gray-950);
+}
+
+.modal-icon-top {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  background: var(--gray-200);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sec-900);
+  font-size: 18px;
+}
+
+.session-block {
+  margin-bottom: 24px;
+}
+
+.session-block-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--conf-950);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+
+.session-block-title::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 16px;
+  background: var(--accent-grn);
+  border-radius: 2px;
+}
+
+.time-inputs-row {
+  display: flex;
+  gap: 16px;
+}
+
+.time-input-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.time-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gray-500);
+  margin-bottom: 6px;
+}
+
+.time-input-wrapper {
+  position: relative;
+  background: var(--gray-50);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.time-input {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gray-950);
+  outline: none;
+  width: 100%;
+}
+
+/* Chrome, Safari, Edge, Opera custom time input to look like text */
+.time-input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.time-icon {
+  font-size: 18px;
+  color: var(--gray-500);
+  pointer-events: none;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.btn-save-modal {
+  flex: 2;
+  background: var(--color-seguridad-500, #00aae1);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.btn-save-modal:hover {
+  background: var(--color-seguridad-600, #0088b3);
+}
+
+.btn-cancel-modal {
+  flex: 1;
+  background: var(--gray-200);
+  color: var(--gray-950);
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancel-modal:hover {
+  background: #ccc;
+}

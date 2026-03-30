@@ -1,0 +1,95 @@
+.app-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: dlg-fade-in 0.18s ease;
+}
+
+@keyframes dlg-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.app-dialog-box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 28px 24px;
+  width: 380px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  border-top: 4px solid transparent;
+  animation: dlg-pop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family: 'Inter', sans-serif;
+}
+
+@keyframes dlg-pop {
+  from { transform: scale(0.88) translateY(20px); opacity: 0; }
+  to   { transform: scale(1) translateY(0);       opacity: 1; }
+}
+
+.app-dialog-info    { border-top-color: #00aae1; }
+.app-dialog-success { border-top-color: #01ae6c; }
+.app-dialog-warning { border-top-color: #ff7a39; }
+.app-dialog-error   { border-top-color: #e53e3e; }
+.app-dialog-confirm { border-top-color: #6c63ff; }
+
+.app-dialog-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.app-dialog-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #033d59;
+  margin-bottom: 8px;
+}
+
+.app-dialog-message {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.app-dialog-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.app-dialog-btn {
+  flex: 1;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.app-dialog-btn:active { transform: scale(0.97); }
+
+.app-dialog-btn-cancel {
+  background: #f0f0f0;
+  color: #555;
+}
+
+.app-dialog-btn-cancel:hover { background: #e0e0e0; }
+
+/* Confirm button color per type */
+.app-dialog-btn-confirm.app-dialog-btn-info    { background: #00aae1; color: #fff; }
+.app-dialog-btn-confirm.app-dialog-btn-success { background: #01ae6c; color: #fff; }
+.app-dialog-btn-confirm.app-dialog-btn-warning { background: #ff7a39; color: #fff; }
+.app-dialog-btn-confirm.app-dialog-btn-error   { background: #e53e3e; color: #fff; }
+.app-dialog-btn-confirm.app-dialog-btn-confirm { background: #6c63ff; color: #fff; }
+
+.app-dialog-btn-confirm:hover { opacity: 0.88; }
