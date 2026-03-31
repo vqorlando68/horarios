@@ -669,5 +669,42 @@ CREATE OR REPLACE PACKAGE BODY pkgln_calendarios AS
       p_output := '{"success":false,"error":"' || REPLACE(SQLERRM, '"', '\"') || '"}';
   END sp_obtener_info_profesional;
 
+  PROCEDURE sp_login(
+    p_input   IN  CLOB,
+    p_output  OUT CLOB,
+    p_success OUT NUMBER
+  ) AS 
+    v_usuario VARCHAR2(100);
+    v_clave   VARCHAR2(100);
+    v_valor   NUMBER;
+  BEGIN
+    p_success := 1;
+    v_usuario := JSON_VALUE(p_input, '$.usuario');
+    v_clave   := JSON_VALUE(p_input, '$.clave');
+
+    v_valor := pkgln_seguridad.f_validar_clave(v_usuario, v_clave, 1);
+    
+    IF v_valor = 1 THEN
+      p_output := '{"success":true,"usuario":"' || v_usuario || '"}';
+    ELSE
+      p_success := 0;
+      p_output := '{"success":false,"error":"Usuario o clave incorrectos"}';
+    END IF;
+  EXCEPTION
+    WHEN OTHERS THEN
+      p_success := 0;
+      p_output := '{"success":false,"error":"' || REPLACE(SQLERRM, '"', '\"') || '"}';
+  END sp_login;
+
+  PROCEDURE sp_obtener_fecha_actual(
+    p_input   IN  CLOB,
+    p_output  OUT CLOB,
+    p_success OUT NUMBER
+  ) AS
+  BEGIN
+    p_success := 1;
+    p_output := '{"success":true,"data":"' || TO_CHAR(f_fecha_actual, 'YYYY-MM-DD"T"HH24:MI:SS') || '"}';
+  END sp_obtener_fecha_actual;
+
 END pkgln_calendarios;
  procedimiento 

@@ -75,6 +75,18 @@ CREATE OR REPLACE PACKAGE pkgln_calendarios AS
     p_success OUT NUMBER
   );
 
+  PROCEDURE sp_login(
+    p_input   IN  CLOB,
+    p_output  OUT CLOB,
+    p_success OUT NUMBER
+  );
+
+  PROCEDURE sp_obtener_fecha_actual(
+    p_input   IN  CLOB,
+    p_output  OUT CLOB,
+    p_success OUT NUMBER
+  );
+
 END pkgln_calendarios;
 /
 

@@ -78,21 +78,12 @@ export async function callOracleFunction(funcName) {
 }
 
 export async function getFechaActual() {
-    let connection;
     try {
-        const currentPool = await getPool();
-        connection = await currentPool.getConnection();
-        const result = await connection.execute(
-            `SELECT TO_CHAR(f_fecha_actual, 'YYYY-MM-DD"T"HH24:MI:SS') AS fecha FROM DUAL`
-        );
-        return { success: true, data: result.rows[0][0] };
+        const result = await callOracleProcedure('pkgln_calendarios.sp_obtener_fecha_actual');
+        return { success: true, data: result.data };
     } catch (err) {
         console.error(`Error in getFechaActual:`, err);
         throw err;
-    } finally {
-        if (connection) {
-            try { await connection.close(); } catch (err) { console.error(err); }
-        }
     }
 }
 
