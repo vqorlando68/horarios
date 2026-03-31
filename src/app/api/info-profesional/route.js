@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { callOracleProcedure } from '../../../../lib/db';
+import { callOracleProcedure } from '../../../lib/db';
 
 export async function POST(request) {
     try {
