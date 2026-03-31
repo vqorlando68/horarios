@@ -122,13 +122,7 @@ export default function ScheduleEditModal({ isOpen, onClose, dayData, onSave, pr
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    // On focus: if empty, default to first valid value for that session
-    const handleFocus = (e, session) => {
-        if (!e.target.value) {
-            const defaultVal = session === 'manana' ? '08:00 AM' : '02:00 PM';
-            setFormData(prev => ({ ...prev, [e.target.name]: defaultVal }));
-        }
-    };
+
 
     // On blur: clamp to correct AM/PM range
     const handleBlurManana = (e) => {
@@ -262,10 +256,8 @@ export default function ScheduleEditModal({ isOpen, onClose, dayData, onSave, pr
                             <span className="time-label">HORA INICIO</span>
                             <div className="time-input-wrapper">
                                 <input type="text" className="time-input" name="hora_inicio_manana"
-                                    placeholder="08:00 AM"
                                     pattern="^(0?[1-9]|1[0-2]):[0-5][0-9]\s*(AM|PM)$"
                                     value={formData.hora_inicio_manana}
-                                    onFocus={e => handleFocus(e, 'manana')}
                                     onBlur={handleBlurManana}
                                     onChange={handleChange}
                                     disabled={!puedeEditarDomingo}
@@ -277,10 +269,8 @@ export default function ScheduleEditModal({ isOpen, onClose, dayData, onSave, pr
                             <span className="time-label">HORA FIN</span>
                             <div className="time-input-wrapper">
                                 <input type="text" className="time-input" name="hora_fin_manana"
-                                    placeholder="11:59 AM"
                                     pattern="^(0?[1-9]|1[0-2]):[0-5][0-9]\s*(AM|PM)$"
                                     value={formData.hora_fin_manana}
-                                    onFocus={e => handleFocus(e, 'manana')}
                                     onBlur={handleBlurManana}
                                     onChange={handleChange}
                                     disabled={!puedeEditarDomingo}
@@ -302,10 +292,8 @@ export default function ScheduleEditModal({ isOpen, onClose, dayData, onSave, pr
                             <span className="time-label">HORA INICIO</span>
                             <div className="time-input-wrapper">
                                 <input type="text" className="time-input" name="hora_inicio_tarde"
-                                    placeholder="12:00 PM"
                                     pattern="^(0?[1-9]|1[0-2]):[0-5][0-9]\s*(AM|PM)$"
                                     value={formData.hora_inicio_tarde}
-                                    onFocus={e => handleFocus(e, 'tarde')}
                                     onBlur={handleBlurTarde}
                                     onChange={handleChange}
                                     disabled={!puedeEditarDomingo}
@@ -317,10 +305,8 @@ export default function ScheduleEditModal({ isOpen, onClose, dayData, onSave, pr
                             <span className="time-label">HORA FIN</span>
                             <div className="time-input-wrapper">
                                 <input type="text" className="time-input" name="hora_fin_tarde"
-                                    placeholder="05:59 PM"
                                     pattern="^(0?[1-9]|1[0-2]):[0-5][0-9]\s*(AM|PM)$"
                                     value={formData.hora_fin_tarde}
-                                    onFocus={e => handleFocus(e, 'tarde')}
                                     onBlur={handleBlurTarde}
                                     onChange={handleChange}
                                     disabled={!puedeEditarDomingo}
