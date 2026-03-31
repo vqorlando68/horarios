@@ -1,5 +1,5 @@
 const oracledb = require('oracledb');
-require('dotenv').config({path: '.env.local'});
+require('dotenv').config({path: '.env'});
 
 async function test() {
   let conn;
@@ -11,7 +11,8 @@ async function test() {
     };
     console.log('Testing with user:', config.user);
     conn = await oracledb.getConnection(config);
-    console.log('Connection successful!');
+    const result = await conn.execute(`SELECT TO_CHAR(f_fecha_actual, 'YYYY-MM-DD"T"HH24:MI:SS') AS fecha FROM DUAL`);
+    console.log('Connection successful! Date:', result.rows[0][0]);
   } catch (err) {
     console.error('Connection failed:', err.message);
   } finally {

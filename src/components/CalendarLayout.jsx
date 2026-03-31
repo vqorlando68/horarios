@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useCalendarioContext } from '../context/CalendarioContext';
+import { useDatabaseDocs } from '../context/DatabaseDocsContext';
+import { calendarDocs } from '../data/calendarDocs';
 import '../styles/tokens.css';
 import './CalendarLayout.css';
 import WeekView from './WeekView';
@@ -7,7 +9,6 @@ import MonthView from './MonthView';
 import DayView from './DayView';
 import AppointmentModal from './AppointmentModal';
 import StatsFooter from './StatsFooter';
-import DocumentationModal from './DocumentationModal';
 import SearchableSelect from './SearchableSelect';
 
 export default function CalendarLayout() {
@@ -19,18 +20,12 @@ export default function CalendarLayout() {
         estadosCita, selectedStatus, setSelectedStatus,
         theme, toggleTheme
     } = useCalendarioContext();
-    const [docVisible, setDocVisible] = useState(false);
+    const { setScreenDocs } = useDatabaseDocs();
 
-    // Dynamic documentation overlay (CTRL+ALT+D)
+    // Register this screen's DB docs for the global Ctrl+Alt+D modal
     useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'd') {
-                setDocVisible(prev => !prev);
-            }
-        };
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, []);
+        setScreenDocs(calendarDocs);
+    }, [setScreenDocs]);
 
     const formatDateLabel = () => {
         // Very basic formatting for the header like "Oct 23 - Oct 29, 2023"
@@ -187,8 +182,6 @@ export default function CalendarLayout() {
             <StatsFooter />
 
             {selectedAppointment && <AppointmentModal appt={selectedAppointment} />}
-
-            {docVisible && <DocumentationModal onClose={() => setDocVisible(false)} />}
         </div>
     );
 }

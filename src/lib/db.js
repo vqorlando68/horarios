@@ -6,10 +6,22 @@ const dbConfig = {
     connectString: process.env.DB_CONNECTION_STRING
 };
 
+let pool;
+
+async function getPool() {
+    if (!pool) {
+        console.log(`Creating Oracle connection pool for user ${dbConfig.user}...`);
+        pool = await oracledb.createPool(dbConfig);
+        console.log(`Pool created successfully!`);
+    }
+    return pool;
+}
+
 export async function callOracleProcedure(procName, inputParams = {}) {
     let connection;
     try {
-        connection = await oracledb.getConnection(dbConfig);
+        const currentPool = await getPool();
+        connection = await currentPool.getConnection();
         const result = await connection.execute(
             `BEGIN ${procName}(:p_input, :p_output, :p_success); END;`,
             {
@@ -44,12 +56,12 @@ export async function callOracleProcedure(procName, inputParams = {}) {
 export async function callOracleFunction(funcName) {
     let connection;
     try {
-        connection = await oracledb.getConnection(dbConfig);
+        const currentPool = await getPool();
+        connection = await currentPool.getConnection();
         const result = await connection.execute(
             `SELECT ${funcName} FROM DUAL`
         );
         const data = result.rows[0][0];
-        // If it's a CLOB, we need to read it
         if (data && typeof data.getData === 'function') {
             const clobData = await data.getData();
             return JSON.parse(clobData);
@@ -68,11 +80,15 @@ export async function callOracleFunction(funcName) {
 export async function getFechaActual() {
     let connection;
     try {
-        connection = await oracledb.getConnection(dbConfig);
+        const currentPool = await getPool();
+        connection = await currentPool.getConnection();
         const result = await connection.execute(
             `SELECT TO_CHAR(f_fecha_actual, 'YYYY-MM-DD"T"HH24:MI:SS') AS fecha FROM DUAL`
         );
         return { success: true, data: result.rows[0][0] };
+    } catch (err) {
+        console.error(`Error in getFechaActual:`, err);
+        throw err;
     } finally {
         if (connection) {
             try { await connection.close(); } catch (err) { console.error(err); }
@@ -83,7 +99,8 @@ export async function getFechaActual() {
 export async function executeSql(sql, binds = {}, options = { outFormat: oracledb.OUT_FORMAT_OBJECT, autoCommit: true }) {
     let connection;
     try {
-        connection = await oracledb.getConnection(dbConfig);
+        const currentPool = await getPool();
+        connection = await currentPool.getConnection();
         const result = await connection.execute(sql, binds, options);
         return result;
     } catch (err) {

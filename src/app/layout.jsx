@@ -1,4 +1,5 @@
 import { CalendarioProvider } from '@/context/CalendarioContext';
+import { DatabaseDocsProvider } from '@/context/DatabaseDocsContext';
 import '@/styles/tokens.css';
 
 export const metadata = {
@@ -11,7 +12,9 @@ export default function RootLayout({ children }) {
     <html lang="es">
       <body style={{ margin: 0, padding: 0, fontFamily: 'sans-serif' }}>
         <CalendarioProvider>
-          {children}
+          <DatabaseDocsProvider>
+            {children}
+          </DatabaseDocsProvider>
         </CalendarioProvider>
       </body>
     </html>

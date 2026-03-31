@@ -1,158 +1,25 @@
 import React, { useState } from 'react';
 import './DocumentationModal.css';
 
-const documentationData = [
-    {
-        id: 'profesionales',
-        title: 'sp_obtener_profesionales',
-        purpose: 'Retorna el maestro de todos los médicos que tienen por lo menos un bloque de horario activo configurado dentro del sistema (tkr_horarios_doctor).',
-        invocationInput: '{}',
-        sqlCode: `SET SERVEROUTPUT ON;
-DECLARE
-  v_input CLOB;
-  v_output CLOB;
-  v_success NUMBER;
-BEGIN
-  v_input := '{}';
-  
-  pkgln_calendarios.sp_obtener_profesionales(
-    p_input => v_input,
-    p_output => v_output,
-    p_success => v_success
-  );
-  
-  IF v_success = 1 THEN
-    DBMS_OUTPUT.PUT_LINE('SUCESO: 1');
-    DBMS_OUTPUT.PUT_LINE('DATA: ' || DBMS_LOB.SUBSTR(v_output, 4000, 1));
-  ELSE
-    DBMS_OUTPUT.PUT_LINE('ERROR: 0');
-  END IF;
-END;
-/`,
-        jsonExpected: `{
-  "success": true,
-  "data": [
-    {
-      "id": 65,
-      "nombre": "65-Rodolfo Vargas"
-    },
-    {
-      "id": 6,
-      "nombre": "Carolina Avila"
-    }
-  ]
-}`
-    },
-    {
-        id: 'citas',
-        title: 'sp_obtener_citas',
-        purpose: 'Busca y retorna las citas programadas (tkr_citas) filtrando cruzadamente por el id_usuario del médico tratante y opcionalmente un rango de fechas.',
-        invocationInput: '{"id_usuario": 65}',
-        sqlCode: `SET SERVEROUTPUT ON;
-DECLARE
-  v_input CLOB;
-  v_output CLOB;
-  v_success NUMBER;
-BEGIN
-  -- Emulamos la estructura que manda el frontend React
-  v_input := '{"id_usuario": 65}';
-  
-  pkgln_calendarios.sp_obtener_citas(
-    p_input => v_input,
-    p_output => v_output,
-    p_success => v_success
-  );
-  
-  IF v_success = 1 THEN
-    DBMS_OUTPUT.PUT_LINE('SUCESO: 1');
-    DBMS_OUTPUT.PUT_LINE('DATA: ' || DBMS_LOB.SUBSTR(v_output, 4000, 1));
-  ELSE
-    DBMS_OUTPUT.PUT_LINE('ERROR: 0');
-  END IF;
-END;
-/`,
-        jsonExpected: `{
-  "success": true,
-  "data": [
-    {
-      "id": 469,
-      "paciente_nombre": "JUAN PEREZ",
-      "fecha_inicio": "2026-03-04T16:00:00",
-      "fecha_fin": "2026-03-04T16:20:00",
-      "modalidad": "Presencial"
-    }
-  ]
-}`
-    },
-    {
-        id: 'horarios',
-        title: 'sp_obtener_horarios',
-        purpose: 'Calcula todas las franjas operativas y la consolidación de tiempos (Obligatorio/Voluntario) por día de la semana para un doctor específico.',
-        invocationInput: '{"id_usuario": 65}',
-        sqlCode: `SET SERVEROUTPUT ON;
-DECLARE
-  v_input CLOB;
-  v_output CLOB;
-  v_success NUMBER;
-BEGIN
-  v_input := '{"id_usuario": 65}';
-  
-  pkgln_calendarios.sp_obtener_horarios(
-    p_input => v_input,
-    p_output => v_output,
-    p_success => v_success
-  );
-  
-  IF v_success = 1 THEN
-    DBMS_OUTPUT.PUT_LINE('SUCESO: 1');
-    DBMS_OUTPUT.PUT_LINE('DATA: ' || DBMS_LOB.SUBSTR(v_output, 4000, 1));
-  ELSE
-    DBMS_OUTPUT.PUT_LINE('ERROR: 0');
-  END IF;
-END;
-/`,
-        jsonExpected: `{
-  "success": true,
-  "data": {
-    "horarios": [
-      {
-        "dia_semana": "MI",
-        "franjas": [
-          {
-            "inicio": "08:00",
-            "fin": "11:40",
-            "tipo_atencion": "V"
-          }
-        ]
-      }
-    ]
-  }
-}`
-    }
-];
-
-// Ligero parser de SQL para colorear la sintaxis
-const HighLightSQL = ({ code }) => {
+// ─── SQL Syntax Highlighter ────────────────────────────────────────────────
+const HighlightSQL = ({ code }) => {
     const lines = code.split('\n');
     return (
         <code className="sql-code-block">
             {lines.map((line, idx) => {
                 let html = line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-                // Regex rules for simple coloring
                 const comments = /(--.*)/g;
                 const strings = /('[^']*')/g;
-                const keywords = /\b(SET|SERVEROUTPUT|ON|DECLARE|BEGIN|END|IF|THEN|ELSE|ELSIF|FOR|LOOP|WHILE|SELECT|FROM|WHERE|AND|OR|IN|AS|INTO|UPDATE|INSERT|DELETE|CREATE|OR|REPLACE|PACKAGE|BODY|PROCEDURE|OUT|CLOB|NUMBER|VARCHAR2|DATE|TRUE|FALSE|NULL|EXCEPTION|WHEN|OTHERS|RETURNING|DUAL)\b/g;
+                const keywords = /\b(SET|SERVEROUTPUT|ON|DECLARE|BEGIN|END|IF|THEN|ELSE|ELSIF|FOR|LOOP|WHILE|SELECT|FROM|WHERE|AND|OR|IN|AS|INTO|UPDATE|INSERT|DELETE|CREATE|REPLACE|PACKAGE|BODY|PROCEDURE|OUT|CLOB|NUMBER|VARCHAR2|DATE|TRUE|FALSE|NULL|EXCEPTION|WHEN|OTHERS|RETURNING|DUAL)\b/g;
                 const functions = /\b(pkgln_calendarios\.\w+|DBMS_OUTPUT\.PUT_LINE|DBMS_LOB\.SUBSTR|DBMS_LOB\.APPEND|DBMS_LOB\.CREATETEMPORARY|JSON_VALUE|TO_CHAR|TO_DATE|TRUNC|SYSDATE)\b/g;
 
-                // Protect comments first so keywords inside them aren't parsed
+                // Protect comments first
                 const hasComment = html.match(comments);
                 let commentPart = '';
                 if (hasComment) {
                     const splitIdx = html.indexOf('--');
-                    commentPart = html.substring(splitIdx);
+                    commentPart = `<span class="sql-comment">${html.substring(splitIdx)}</span>`;
                     html = html.substring(0, splitIdx);
-                    commentPart = `<span class="sql-comment">${commentPart}</span>`;
                 }
 
                 html = html.replace(strings, '<span class="sql-string">$1</span>');
@@ -162,7 +29,7 @@ const HighLightSQL = ({ code }) => {
                 return (
                     <div key={idx} className="code-line">
                         <span className="line-number">{idx + 1}</span>
-                        <span dangerouslySetInnerHTML={{ __html: html + commentPart || '&nbsp;' }} />
+                        <span dangerouslySetInnerHTML={{ __html: (html + commentPart) || '&nbsp;' }} />
                     </div>
                 );
             })}
@@ -170,75 +37,190 @@ const HighLightSQL = ({ code }) => {
     );
 };
 
-export default function DocumentationModal({ onClose }) {
-    const [activeTab, setActiveTab] = useState(documentationData[0].id);
+// ─── JSON Viewer ─────────────────────────────────────────────────────────────
+const JsonBlock = ({ code }) => (
+    <pre className="json-block"><code>{code}</code></pre>
+);
+
+// ─── Params Table ─────────────────────────────────────────────────────────────
+const ParamsTable = ({ params, direction }) => (
+    <table className="params-table">
+        <thead>
+            <tr>
+                <th>Parámetro</th>
+                <th>Tipo</th>
+                {direction === 'input' && <th>Req.</th>}
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {params.map((p, i) => (
+                <tr key={i}>
+                    <td><code className="param-name">{p.name}</code></td>
+                    <td><span className="param-type">{p.type}</span></td>
+                    {direction === 'input' && (
+                        <td>
+                            <span className={`req-badge ${p.required ? 'req-yes' : 'req-no'}`}>
+                                {p.required ? 'Sí' : 'No'}
+                            </span>
+                        </td>
+                    )}
+                    <td className="param-desc">{p.description}</td>
+                </tr>
+            ))}
+        </tbody>
+    </table>
+);
+
+// ─── Copy Button ─────────────────────────────────────────────────────────────
+const CopyButton = ({ text, label = 'Copiar' }) => {
     const [copied, setCopied] = useState(false);
-
-    const currentDoc = documentationData.find(d => d.id === activeTab);
-
     const handleCopy = () => {
-        navigator.clipboard.writeText(currentDoc.sqlCode).then(() => {
+        navigator.clipboard.writeText(text).then(() => {
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
         });
     };
+    return (
+        <button className={`copy-btn ${copied ? 'copied' : ''}`} onClick={handleCopy}>
+            {copied ? '✓ Copiado' : label}
+        </button>
+    );
+};
+
+// ─── Main Modal ───────────────────────────────────────────────────────────────
+export default function DocumentationModal({ docs = [], onClose }) {
+    const [activeTab, setActiveTab] = useState(docs[0]?.id ?? '');
+    const [activeSection, setActiveSection] = useState('params'); // 'params' | 'example'
+
+    const currentDoc = docs.find(d => d.id === activeTab) ?? docs[0];
+
+    if (!docs.length) {
+        return (
+            <div className="doc-overlay" onClick={onClose}>
+                <div className="doc-modal" onClick={e => e.stopPropagation()}>
+                    <div className="doc-header">
+                        <div className="doc-header-left">
+                            <span className="doc-header-icon">🗄️</span>
+                            <h2>Documentación API PL/SQL</h2>
+                        </div>
+                        <button className="doc-close" onClick={onClose} title="Cerrar (Esc)">×</button>
+                    </div>
+                    <div className="doc-content doc-empty">
+                        <p>Esta pantalla no tiene procedimientos de base de datos documentados.</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="doc-overlay" onClick={onClose}>
             <div className="doc-modal" onClick={e => e.stopPropagation()}>
+
+                {/* ── Header ─────────────────────────────────────────── */}
                 <div className="doc-header">
-                    <h2>Documentación API Pl/SQL</h2>
-                    <button className="doc-close" onClick={onClose}>×</button>
+                    <div className="doc-header-left">
+                        <span className="doc-header-icon">🗄️</span>
+                        <div>
+                            <h2>Documentación API PL/SQL</h2>
+                            <span className="doc-header-sub">
+                                {docs.length} procedimiento{docs.length !== 1 ? 's' : ''} · <kbd>Ctrl+Alt+D</kbd> para cerrar
+                            </span>
+                        </div>
+                    </div>
+                    <button className="doc-close" onClick={onClose} title="Cerrar">×</button>
                 </div>
 
+                {/* ── Procedure Tabs ─────────────────────────────────── */}
                 <div className="doc-tabs">
-                    {documentationData.map(tab => (
+                    {docs.map(tab => (
                         <button
                             key={tab.id}
                             className={`doc-tab ${activeTab === tab.id ? 'active' : ''}`}
                             onClick={() => setActiveTab(tab.id)}
                         >
+                            <span className="tab-pkg">{tab.package}.</span>
                             {tab.title}
                         </button>
                     ))}
                 </div>
 
+                {/* ── Sub-tabs ───────────────────────────────────────── */}
+                <div className="doc-subtabs">
+                    <button
+                        className={`doc-subtab ${activeSection === 'params' ? 'active' : ''}`}
+                        onClick={() => setActiveSection('params')}
+                    >
+                        📋 Parámetros y Respuesta
+                    </button>
+                    <button
+                        className={`doc-subtab ${activeSection === 'example' ? 'active' : ''}`}
+                        onClick={() => setActiveSection('example')}
+                    >
+                        ▶ Bloque Anónimo (SQL)
+                    </button>
+                </div>
+
+                {/* ── Content ────────────────────────────────────────── */}
                 <div className="doc-content">
-                    <section className="doc-section purpose-box">
-                        <h3>1. Finalidad ({currentDoc.title})</h3>
+
+                    {/* Purpose */}
+                    <div className="purpose-box">
+                        <span className="purpose-icon">💡</span>
                         <p>{currentDoc.purpose}</p>
-                    </section>
-
-                    <div className="doc-grid">
-                        <section className="doc-section split-col">
-                            <h3>2. Invocación desde Node/React</h3>
-                            <div className="code-container invocation-code">
-                                <code> p_input {'=>'} {currentDoc.invocationInput} </code>
-                            </div>
-                            <p style={{ marginTop: '12px', fontSize: '0.85rem' }}>
-                                El procedimiento responderá con un formato estándar <code>{`{success: true/false, data: []}`}</code> mediante el parámetro de salida <code>p_output</code>.
-                            </p>
-                        </section>
-
-                        <section className="doc-section split-col">
-                            <h3>4. Respuesta Esperada Pura (JSON CLOB)</h3>
-                            <div className="code-container dark-container">
-                                <pre><code>{currentDoc.jsonExpected}</code></pre>
-                            </div>
-                        </section>
                     </div>
 
-                    <section className="doc-section">
-                        <div className="code-header">
-                            <h3>3. Ejemplo de Bloque Anónimo (Prueba BD)</h3>
-                            <button className={`copy-btn ${copied ? 'copied' : ''}`} onClick={handleCopy}>
-                                {copied ? '✓ Copiado' : 'Copiar Código SQL'}
-                            </button>
+                    {/* ── Section: Params & Response ─────────────────── */}
+                    {activeSection === 'params' && (
+                        <div className="params-section">
+
+                            {/* Input Params */}
+                            <div className="doc-section">
+                                <div className="section-title-row">
+                                    <h3>📥 Parámetros de Entrada (p_input JSON)</h3>
+                                    <CopyButton text={currentDoc.inputJson} label="Copiar JSON" />
+                                </div>
+                                {currentDoc.inputParams?.length > 0
+                                    ? <ParamsTable params={currentDoc.inputParams} direction="input" />
+                                    : <p className="no-params">Sin parámetros de entrada adicionales.</p>
+                                }
+                                <div className="json-section">
+                                    <span className="json-label">Ejemplo completo p_input:</span>
+                                    <JsonBlock code={currentDoc.inputJson} />
+                                </div>
+                            </div>
+
+                            {/* Output Params */}
+                            <div className="doc-section">
+                                <div className="section-title-row">
+                                    <h3>📤 Parámetros de Salida</h3>
+                                    <CopyButton text={currentDoc.outputJson} label="Copiar JSON" />
+                                </div>
+                                {currentDoc.outputParams?.length > 0
+                                    ? <ParamsTable params={currentDoc.outputParams} direction="output" />
+                                    : <p className="no-params">Sin parámetros de salida definidos.</p>
+                                }
+                                <div className="json-section">
+                                    <span className="json-label">Estructura p_output (JSON CLOB):</span>
+                                    <JsonBlock code={currentDoc.outputJson} />
+                                </div>
+                            </div>
                         </div>
-                        <div className="code-container">
-                            <HighLightSQL code={currentDoc.sqlCode} />
+                    )}
+
+                    {/* ── Section: SQL Example ───────────────────────── */}
+                    {activeSection === 'example' && (
+                        <div className="doc-section">
+                            <div className="code-header">
+                                <h3>Bloque anónimo para prueba directa en BD Oracle</h3>
+                                <CopyButton text={currentDoc.sqlCode} label="Copiar SQL" />
+                            </div>
+                            <div className="code-container">
+                                <HighlightSQL code={currentDoc.sqlCode} />
+                            </div>
                         </div>
-                    </section>
+                    )}
                 </div>
             </div>
         </div>

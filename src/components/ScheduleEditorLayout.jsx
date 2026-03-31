@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { calendarioService } from '@/services/calendarioService';
+import { useDatabaseDocs } from '@/context/DatabaseDocsContext';
+import { scheduleEditorDocs } from '@/data/scheduleEditorDocs';
 import './ScheduleEditorLayout.css';
 import ScheduleEditModal from './ScheduleEditModal';
 import SearchableSelect from './SearchableSelect';
@@ -44,6 +46,12 @@ const formatHoraAMPM = (timeStr) => {
 function ScheduleEditorLayout() {
     const [profesionales, setProfesionales] = useState([]);
     const [selectedProfId, setSelectedProfId] = useState(0);
+    const { setScreenDocs } = useDatabaseDocs();
+
+    // Register this screen's DB docs for the global Ctrl+Alt+D modal
+    useEffect(() => {
+        setScreenDocs(scheduleEditorDocs);
+    }, [setScreenDocs]);
 
     // Modo: 'base' o 'personalizado'
     const [modo, setModo] = useState(MODO_BASE);

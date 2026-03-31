@@ -1,228 +1,428 @@
+/* ───────────────────────────────────────────────────────────────
+   DocumentationModal.css  –  uses CSS vars from tokens.css
+   so it honours both light and dark themes automatically.
+─────────────────────────────────────────────────────────────── */
+
+/* ── Overlay ─────────────────────────────────────────────────── */
 .doc-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
+    inset: 0;
+    background-color: var(--modal-backdrop);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    padding: 16px;
+    backdrop-filter: blur(4px);
+    animation: overlayIn 0.15s ease-out;
 }
 
+@keyframes overlayIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* ── Modal ──────────────────────────────────────────────────── */
 .doc-modal {
-    background: #ffffff;
-    width: 850px;
-    max-width: 95vw;
-    max-height: 90vh;
-    border-radius: 12px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    background: var(--modal-bg);
+    width: 900px;
+    max-width: 96vw;
+    max-height: 92vh;
+    border-radius: 14px;
+    box-shadow: var(--shadow-lg), 0 0 0 1px var(--border-color);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    animation: fadeIn 0.2s ease-out;
+    animation: modalIn 0.2s cubic-bezier(0.16,1,0.3,1);
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.98);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+@keyframes modalIn {
+    from { opacity: 0; transform: translateY(12px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0)    scale(1);    }
 }
 
+/* ── Header ─────────────────────────────────────────────────── */
 .doc-header {
-    background-color: #e0f2fe;
-    color: var(--text-primary);
-    padding: 16px 24px;
+    background: linear-gradient(135deg, var(--color-confianza-950, #033d59) 0%, #0065a3 100%);
+    color: #fff;
+    padding: 16px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid var(--color-seguridad-500);
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.doc-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.doc-header-icon {
+    font-size: 1.6rem;
+    line-height: 1;
 }
 
 .doc-header h2 {
     margin: 0;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.01em;
 }
 
-.doc-header h2 span {
-    font-family: monospace;
-    background: rgba(0, 0, 0, 0.05);
-    padding: 4px 8px;
+.doc-header-sub {
+    display: block;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.65);
+    margin-top: 2px;
+}
+
+.doc-header-sub kbd {
+    background: rgba(255,255,255,0.15);
     border-radius: 4px;
-    margin-left: 8px;
-    font-weight: normal;
-    border: 1px solid var(--border-light);
+    padding: 1px 5px;
+    font-family: monospace;
+    font-size: 0.72rem;
+    border: 1px solid rgba(255,255,255,0.2);
 }
 
 .doc-close {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 1.5rem;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1.3rem;
+    width: 32px;
+    height: 32px;
     cursor: pointer;
-    line-height: 1;
-    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+    flex-shrink: 0;
 }
 
 .doc-close:hover {
-    color: var(--text-primary);
-    opacity: 1;
+    background: rgba(255,255,255,0.25);
 }
 
+/* ── Procedure Tabs ─────────────────────────────────────────── */
 .doc-tabs {
     display: flex;
-    background-color: #f8fafc;
-    border-bottom: 1px solid var(--border-light);
+    background: var(--bg-surface-alt);
+    border-bottom: 1px solid var(--border-color);
     padding: 0 16px;
-    gap: 8px;
+    gap: 4px;
     overflow-x: auto;
+    flex-shrink: 0;
+    scrollbar-width: thin;
 }
 
 .doc-tab {
     background: transparent;
     border: none;
-    padding: 12px 16px;
-    font-size: 0.9rem;
+    border-bottom: 2px solid transparent;
+    padding: 10px 14px;
+    font-size: 0.82rem;
     font-weight: 600;
     color: var(--text-secondary);
     cursor: pointer;
-    border-bottom: 2px solid transparent;
     white-space: nowrap;
-    transition: all 0.2s;
+    transition: all 0.18s;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    line-height: 1.4;
+}
+
+.tab-pkg {
+    font-size: 0.68rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    font-family: "Fira Code", monospace;
 }
 
 .doc-tab:hover {
     color: var(--text-primary);
-    background-color: #f1f5f9;
+    background: var(--bg-toggle);
 }
 
 .doc-tab.active {
     color: var(--color-seguridad-500);
     border-bottom-color: var(--color-seguridad-500);
+    background: transparent;
 }
 
+/* ── Sub-tabs ───────────────────────────────────────────────── */
+.doc-subtabs {
+    display: flex;
+    gap: 8px;
+    padding: 10px 20px 0;
+    background: var(--modal-bg);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.doc-subtab {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 6px 12px 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+    border-radius: 6px 6px 0 0;
+}
+
+.doc-subtab:hover {
+    color: var(--text-primary);
+    background: var(--bg-surface-alt);
+}
+
+.doc-subtab.active {
+    color: var(--color-seguridad-500);
+    border-bottom-color: var(--color-seguridad-500);
+}
+
+/* ── Content ────────────────────────────────────────────────── */
 .doc-content {
-    padding: 24px;
+    padding: 20px;
     overflow-y: auto;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.doc-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+.doc-empty {
+    justify-content: center;
+    align-items: center;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/* ── Purpose Box ────────────────────────────────────────────── */
+.purpose-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: linear-gradient(135deg, rgba(0,170,225,0.07) 0%, rgba(0,170,225,0.03) 100%);
+    border-left: 3px solid var(--color-seguridad-500);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 16px;
+}
+
+.purpose-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.purpose-box p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+}
+
+/* ── Doc Section ────────────────────────────────────────────── */
+.doc-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.params-section {
+    display: flex;
+    flex-direction: column;
     gap: 24px;
 }
 
-@media (max-width: 768px) {
-    .doc-grid {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
+.section-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+    gap: 12px;
 }
 
-.doc-section {
-    margin-bottom: 24px;
-}
-
-.purpose-box {
-    background: #f0fdf4;
-    border-left: 4px solid #16a34a;
-    padding: 16px;
-    border-radius: 4px;
+.section-title-row h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .doc-section h3 {
-    margin-top: 0;
-    margin-bottom: 12px;
-    font-size: 1.1rem;
-    color: var(--text-primary);
-    border-bottom: 2px solid #f3f4f6;
-    padding-bottom: 8px;
-}
-
-.doc-section p {
-    color: var(--text-secondary);
-    line-height: 1.6;
+    margin: 0 0 4px 0;
     font-size: 0.95rem;
-    margin: 8px 0;
+    font-weight: 700;
+    color: var(--text-primary);
 }
 
-.doc-section code {
-    background: #f8fafc;
+/* ── Params Table ───────────────────────────────────────────── */
+.params-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.params-table thead tr {
+    background: var(--bg-surface-alt);
+}
+
+.params-table th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.params-table td {
+    padding: 8px 12px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: top;
+    line-height: 1.5;
+}
+
+.params-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.params-table tbody tr:hover {
+    background: var(--bg-surface-alt);
+}
+
+.param-name {
+    font-family: "Fira Code", Consolas, monospace;
+    font-size: 0.82rem;
+    color: var(--color-seguridad-500);
+    background: rgba(0,170,225,0.08);
     padding: 2px 6px;
     border-radius: 4px;
-    border: 1px solid var(--border-light);
-    font-family: "Fira Code", monospace;
-    font-size: 0.9em;
-    color: var(--text-primary);
-    font-weight: 600;
+    border: 1px solid rgba(0,170,225,0.2);
+    white-space: nowrap;
 }
 
+.param-type {
+    font-family: "Fira Code", Consolas, monospace;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.param-desc {
+    color: var(--text-secondary);
+    font-size: 0.83rem;
+}
+
+.req-badge {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.req-yes {
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+    border: 1px solid rgba(220, 38, 38, 0.25);
+}
+
+.req-no {
+    background: var(--bg-surface-alt);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+}
+
+.no-params {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+/* ── JSON Section ───────────────────────────────────────────── */
+.json-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.json-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.json-block {
+    margin: 0;
+    background: #1e293b;
+    border-radius: 8px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.json-block code {
+    font-family: "Fira Code", Consolas, monospace;
+    color: #a8d5f5;
+    background: transparent;
+    padding: 0;
+}
+
+/* ── SQL Code Block ─────────────────────────────────────────── */
 .code-header {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
-    border-bottom: 2px solid #f3f4f6;
-    margin-bottom: 12px;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    gap: 12px;
 }
 
 .code-header h3 {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
-
-.copy-btn {
-    background-color: #ffffff;
-    border: 1px solid var(--border-light);
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    color: var(--text-secondary);
-    transition: all 0.2s;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.copy-btn:hover {
-    background-color: #f8fafc;
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
     color: var(--text-primary);
 }
 
-.copy-btn.copied {
-    background-color: #f0fdf4;
-    border-color: #86efac;
-    color: #166534;
-}
-
 .code-container {
-    background-color: #1e293b;
-    border-radius: 8px;
+    background: #1e293b;
+    border-radius: 10px;
     padding: 16px;
     overflow-x: auto;
-}
-
-.invocation-code {
-    background-color: #f1f5f9;
-    border: 1px solid #e2e8f0;
-    color: #0f172a;
-    padding: 12px;
+    border: 1px solid rgba(255,255,255,0.05);
 }
 
 .sql-code-block {
     display: block;
     font-family: "Fira Code", Consolas, Monaco, monospace;
-    font-size: 0.9rem;
-    line-height: 1.5;
+    font-size: 0.88rem;
+    line-height: 1.6;
     color: #f8fafc;
 }
 
@@ -232,44 +432,47 @@
 
 .line-number {
     display: inline-block;
-    width: 30px;
-    min-width: 30px;
+    width: 32px;
+    min-width: 32px;
     text-align: right;
     margin-right: 16px;
-    color: #64748b;
+    color: #475569;
     user-select: none;
+    font-size: 0.8rem;
 }
 
-/* Syntax Highlighting Colors */
-.sql-keyword {
-    color: #c678dd;
-    font-weight: bold;
+/* Syntax colours (One Dark palette) */
+.sql-keyword  { color: #c678dd; font-weight: 600; }
+.sql-function { color: #61afef; }
+.sql-string   { color: #98c379; }
+.sql-comment  { color: #636d83; font-style: italic; }
+
+/* ── Copy Button ────────────────────────────────────────────── */
+.copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 5px 11px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.15s;
+    white-space: nowrap;
+    box-shadow: var(--shadow-sm);
 }
 
-/* Purple */
-.sql-function {
-    color: #61afef;
+.copy-btn:hover {
+    background: var(--bg-surface-alt);
+    color: var(--text-primary);
+    border-color: var(--color-seguridad-500);
 }
 
-/* Blue */
-.sql-string {
-    color: #98c379;
-}
-
-/* Green */
-.sql-comment {
-    color: #7f848e;
-    font-style: italic;
-}
-
-/* Gray */
-
-.dark-container pre {
-    margin: 0;
-}
-
-.dark-container code {
-    background: transparent;
-    color: #f8fafc;
-    padding: 0;
+.copy-btn.copied {
+    background: rgba(1, 174, 108, 0.1);
+    border-color: var(--color-salud-600);
+    color: var(--color-salud-600);
 }
