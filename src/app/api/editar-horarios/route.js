@@ -11,14 +11,14 @@ export async function GET(request) {
     }
 
     try {
-        const horariosData = await callOracleProcedure('pkgln_calendarios.sp_editar_horarios', { id_usuario, tipo });
-        const ausenciasData = await callOracleProcedure('pkgln_calendarios.sp_obtener_ausencias', { id_usuario });
+        const resHorarios = await callOracleProcedure('pkgln_calendarios.sp_editar_horarios', { id_usuario, tipo });
+        const resAusencias = await callOracleProcedure('pkgln_calendarios.sp_obtener_ausencias', { id_usuario });
 
         return NextResponse.json({
             success: true,
             data: {
-                horarios: horariosData,
-                ausencias: ausenciasData.data
+                horarios: resHorarios.data,
+                ausencias: resAusencias.data
             }
         });
     } catch (error) {
