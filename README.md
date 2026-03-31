@@ -29,6 +29,15 @@ Todos los procedimientos pertenecen al paquete `pkgln_calendarios` y siguen el e
 - **Salida (JSON):**
   - `data`: Array de objetos `{ id, nombre, trabaja_festivos }`.
 - **Ubicación:** `CalendarLayout.jsx` y `ScheduleEditorLayout.jsx`.
+- **Ejemplo SQL:**
+  ```sql
+  DECLARE
+    v_out CLOB; v_res NUMBER;
+  BEGIN
+    pkgln_calendarios.sp_obtener_profesionales('{"incluir_sin_horario": 1}', v_out, v_res);
+    DBMS_OUTPUT.PUT_LINE(v_out);
+  END;
+  ```
 
 ### 2. `pkgln_calendarios.sp_obtener_citas`
 **Uso:** Recupera las citas programadas para las vistas de Día, Semana y Mes.
@@ -40,6 +49,15 @@ Todos los procedimientos pertenecen al paquete `pkgln_calendarios` y siguen el e
 - **Salida (JSON):**
   - `data`: Array de citas con `paciente_nombre`, `fecha_inicio`, `estado_cita`, etc.
 - **Ubicación:** `CalendarioContext.jsx` -> `fetchData`.
+- **Ejemplo SQL:**
+  ```sql
+  DECLARE
+    v_out CLOB; v_res NUMBER;
+  BEGIN
+    pkgln_calendarios.sp_obtener_citas('{"id_usuario": 65, "fecha_inicio": "2026-03-01T00:00:00", "fecha_fin": "2026-03-31T23:59:59"}', v_out, v_res);
+    DBMS_OUTPUT.PUT_LINE(v_out);
+  END;
+  ```
 
 ### 3. `pkgln_calendarios.sp_obtener_horarios`
 **Uso:** Determina las franjas de disponibilidad visual en el calendario.
@@ -49,6 +67,15 @@ Todos los procedimientos pertenecen al paquete `pkgln_calendarios` y siguen el e
 - **Salida (JSON):**
   - `data.horarios`: Array de franjas por día (`inicio`, `fin`, `tipo_atencion`).
 - **Ubicación:** `CalendarioContext.jsx` -> `fetchData`.
+- **Ejemplo SQL:**
+  ```sql
+  DECLARE
+    v_out CLOB; v_res NUMBER;
+  BEGIN
+    pkgln_calendarios.sp_obtener_horarios('{"id_usuario": 65, "fecha_inicio": "2026-03-31"}', v_out, v_res);
+    DBMS_OUTPUT.PUT_LINE(v_out);
+  END;
+  ```
 
 ### 4. `pkgln_calendarios.sp_resumen_estadistico`
 **Uso:** Carga los contadores del pie de página (Total, Atendidas, Pendientes).
@@ -57,6 +84,15 @@ Todos los procedimientos pertenecen al paquete `pkgln_calendarios` y siguen el e
 - **Salida (JSON):**
   - `data`: Objeto `{ total_citas, atendidas, pendientes }`.
 - **Ubicación:** `StatsFooter.jsx`.
+- **Ejemplo SQL:**
+  ```sql
+  DECLARE
+    v_out CLOB; v_res NUMBER;
+  BEGIN
+    pkgln_calendarios.sp_resumen_estadistico('{"id_usuario": 65, "fecha_inicio": "2026-03-01", "fecha_fin": "2026-03-31"}', v_out, v_res);
+    DBMS_OUTPUT.PUT_LINE(v_out);
+  END;
+  ```
 
 ---
 
@@ -72,6 +108,15 @@ Todos los procedimientos pertenecen al paquete `pkgln_calendarios` y siguen el e
   - `hora_inicio_manana` / `hora_fin_manana`: Bloque matutino.
   - `hora_inicio_tarde` / `hora_fin_tarde`: Bloque vespertino.
 - **Ubicación:** `ScheduleEditorLayout.jsx`.
+- **Ejemplo SQL (Base):**
+  ```sql
+  DECLARE
+    v_out CLOB; v_res NUMBER;
+  BEGIN
+    pkgln_calendarios.sp_editar_horarios('{"id_usuario": 65, "tipo": "base"}', v_out, v_res);
+    DBMS_OUTPUT.PUT_LINE(v_out);
+  END;
+  ```
 
 ### 6. `pkgln_calendarios.sp_guardar_horario_doctor`
 **Uso:** Persiste cambios (Insert/Update) mediante un MERGE en la tabla `tkr_horarios_doctor`.
@@ -79,6 +124,15 @@ Todos los procedimientos pertenecen al paquete `pkgln_calendarios` y siguen el e
   - `id_usuario`, `dia_semana`, `fecha_inicio`, `fecha_final` (null para base).
   - `hora_inicio_manana`, `hora_fin_manana`, `hora_inicio_tarde`, `hora_fin_tarde`.
 - **Ubicación:** `ScheduleEditorLayout.jsx` -> `handleSaveDay`.
+- **Ejemplo SQL:**
+  ```sql
+  DECLARE
+    v_out CLOB; v_res NUMBER;
+  BEGIN
+    pkgln_calendarios.sp_guardar_horario_doctor('{"id_usuario": 65, "dia_semana": "LU", "fecha_inicio": "2026-01-01", "hora_inicio_manana": "08:00", "hora_fin_manana": "12:00"}', v_out, v_res);
+    DBMS_OUTPUT.PUT_LINE(v_out);
+  END;
+  ```
 
 ---
 
@@ -86,41 +140,33 @@ Todos los procedimientos pertenecen al paquete `pkgln_calendarios` y siguen el e
 
 ### 7. `pkgln_calendarios.sp_obtener_ausencias`
 **Uso:** Carga bloqueos por vacaciones o permisos del profesional.
-- **Ubicación:** `CalendarioContext.jsx`.
+- **Ejemplo SQL:**
+  ```sql
+  DECLARE
+    v_out CLOB; v_res NUMBER;
+  BEGIN
+    pkgln_calendarios.sp_obtener_ausencias('{"id_usuario": 65, "fecha_inicio": "2026-03-01T00:00:00", "fecha_fin": "2026-03-31T23:59:59"}', v_out, v_res);
+    DBMS_OUTPUT.PUT_LINE(v_out);
+  END;
+  ```
 
 ### 8. `pkgln_calendarios.sp_obtener_estados_cita`
 **Uso:** Población del filtro de estados en el calendario.
-- **Ubicación:** `CalendarioContext.jsx`.
+- **Ejemplo SQL:**
+  ```sql
+  DECLARE
+    v_out CLOB; v_res NUMBER;
+  BEGIN
+    pkgln_calendarios.sp_obtener_estados_cita('{}', v_out, v_res);
+    DBMS_OUTPUT.PUT_LINE(v_out);
+  END;
+  ```
 
 ### 9. `f_fecha_actual` (Función)
 **Uso:** Sincroniza la fecha del sistema del cliente con la del servidor Oracle.
 - **Ubicación:** `CalendarioContext.jsx` -> `useEffect` inicial.
+- **Ejemplo SQL:**
+  ```sql
+  SELECT pkgln_calendarios.f_fecha_actual() FROM DUAL;
+  ```
 
----
-
-## Ejemplo de Llamado (SQL Pleno)
-
-```sql
-SET SERVEROUTPUT ON;
-DECLARE
-  v_input   CLOB;
-  v_output  CLOB;
-  v_success NUMBER;
-BEGIN
-  -- Ejemplo para sp_obtener_citas
-  v_input := '{"id_usuario": 65, "fecha_inicio": "2026-03-01T00:00:00", "fecha_fin": "2026-03-31T23:59:59"}';
-
-  pkgln_calendarios.sp_obtener_citas(
-    p_input   => v_input,
-    p_output  => v_output,
-    p_success => v_success
-  );
-
-  IF v_success = 1 THEN
-    DBMS_OUTPUT.PUT_LINE('DATA: ' || v_output);
-  ELSE
-    DBMS_OUTPUT.PUT_LINE('ERROR');
-  END IF;
-END;
-/
-```
