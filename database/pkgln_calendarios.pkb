@@ -487,7 +487,7 @@ CREATE OR REPLACE PACKAGE BODY pkgln_calendarios AS
     WHEN OTHERS THEN
       p_success := 0;
       p_output := '{"success":false,"error":"' || REPLACE(SQLERRM, '"', '\"') || '"}';
-  END sp_obtener_estados_citas_profesional;
+  END sp_obtener_estados_cita;
 
   -- ═══════════════════════════════════════════════════════════
   --  EDICION DE HORARIOS
@@ -554,7 +554,7 @@ CREATE OR REPLACE PACKAGE BODY pkgln_calendarios AS
     WHEN OTHERS THEN
       p_success := 0;
       p_output := '{"success":false,"error":"' || REPLACE(SQLERRM, '"', '\"') || '"}';
-  END sp_obtener_horarios_doctor;
+  END sp_editar_horarios;
 
 
   PROCEDURE sp_guardar_horario_doctor(
@@ -707,4 +707,4 @@ CREATE OR REPLACE PACKAGE BODY pkgln_calendarios AS
   END sp_obtener_fecha_actual;
 
 END pkgln_calendarios;
- procedimiento 
+  
