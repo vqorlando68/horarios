@@ -451,7 +451,7 @@ CREATE OR REPLACE PACKAGE BODY pkgln_calendarios AS
       p_output := '{"success":false,"error":"' || REPLACE(SQLERRM, '"', '\"') || '"}';
   END sp_resumen_estadistico;
 
-  PROCEDURE sp_obtener_estados_citas_profesional(
+  PROCEDURE sp_obtener_estados_cita(
     p_input   IN  CLOB,
     p_output  OUT CLOB,
     p_success OUT NUMBER
@@ -493,7 +493,7 @@ CREATE OR REPLACE PACKAGE BODY pkgln_calendarios AS
   --  EDICION DE HORARIOS
   -- ═══════════════════════════════════════════════════════════
 
-  PROCEDURE sp_obtener_horarios_doctor(
+  PROCEDURE sp_editar_horarios(
     p_input   IN  CLOB,
     p_output  OUT CLOB,
     p_success OUT NUMBER

@@ -50,14 +50,14 @@ CREATE OR REPLACE PACKAGE pkgln_calendarios AS
     p_success OUT NUMBER
   );
 
-  PROCEDURE sp_obtener_estados_citas_profesional(
+  PROCEDURE sp_obtener_estados_cita(
     p_input   IN  CLOB,
     p_output  OUT CLOB,
     p_success OUT NUMBER
   );
 
   -- Edicion de Horarios
-  PROCEDURE sp_obtener_horarios_doctor(
+  PROCEDURE sp_editar_horarios(
     p_input   IN  CLOB,
     p_output  OUT CLOB,
     p_success OUT NUMBER

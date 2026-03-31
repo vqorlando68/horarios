@@ -11,7 +11,7 @@ export async function GET(request) {
     }
 
     try {
-        const horariosData = await callOracleProcedure('pkgln_calendarios.sp_obtener_horarios_doctor', { id_usuario, tipo });
+        const horariosData = await callOracleProcedure('pkgln_calendarios.sp_editar_horarios', { id_usuario, tipo });
         const ausenciasData = await callOracleProcedure('pkgln_calendarios.sp_obtener_ausencias', { id_usuario });
 
         return NextResponse.json({
